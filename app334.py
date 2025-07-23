@@ -85,29 +85,13 @@ CITY_COORDINATES = {
 # ---- WEATHER DATA FROM OPEN-METEO ----
 @st.cache_data
 def get_weather_data(city):
-    lat, lon = CITY_COORDINATES.get(city, (0, 0))
-    if lat == 0 and lon == 0:
-        st.warning(f"Coordinates not found for {city}. Using simulated data.")
-        return get_simulated_weather(city)
-    
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_mean,precipitation_sum&timezone=auto"
-    try:
-        response = requests.get(url, timeout=10).json()
-        weather_data = []
-        for i in range(7):
-            date = (datetime.now() + timedelta(days=i)).date()
-            temp = response["daily"]["temperature_2m_mean"][i]
-            rainfall = response["daily"]["precipitation_sum"][i]
-            weather_data.append({"date": date, "temp": temp, "rainfall": rainfall})
-        return pd.DataFrame(weather_data)
-    except Exception as e:
-        st.warning(f"Failed to fetch weather data for {city}: {str(e)}. Using simulated data.")
-        return get_simulated_weather(city)
+    # Temporarily force simulated data for testing (extended to 30 days)
+    return get_simulated_weather(city)
 
 def get_simulated_weather(city):
     today = datetime.now()
     weather_data = []
-    for i in range(7):
+    for i in range(30):  # Extended to 30 days
         date = (today + timedelta(days=i)).date()
         temp = np.random.uniform(15, 35)  # Favor Millet's requirements
         rainfall = np.random.uniform(30, 150)
@@ -116,8 +100,9 @@ def get_simulated_weather(city):
 
 def is_suitable_for_planting(temp, rainfall, crop):
     req = CROP_REQUIREMENTS[crop]
+    # Allow zero rainfall as a valid case for dry-season crops
     return (req["min_temp"] <= temp <= req["max_temp"] and
-            req["min_rainfall"] <= rainfall <= req["max_rainfall"])
+            (rainfall >= req["min_rainfall"] or rainfall == 0) and rainfall <= req["max_rainfall"])
 
 # ---- INPUT VALIDATION ----
 def validate_inputs(rain, fert, temp, n, p, k, crop):
@@ -298,6 +283,8 @@ with tab4:
     st.markdown("### Planting Scheduler")
     if st.button("Generate Planting Schedule", key="schedule_button"):
         weather_df = get_weather_data(city)
+        # Debug: Display raw weather data
+        st.write("Debug - Weather Data:", weather_df)
         suitable_dates = []
         
         for _, row in weather_df.iterrows():
@@ -334,4 +321,4 @@ with tab4:
                 mime="text/plain"
             )
         else:
-            st.warning(f"No suitable planting dates found for {crop} in the next 7 days.")
+            st.warning(f"No suitable planting dates found for {crop} in the next 30 days.")
