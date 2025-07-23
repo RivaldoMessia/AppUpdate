@@ -43,11 +43,16 @@ def login():
 if not st.session_state["authenticated"]:
     login()
 
-# ---- CROP REQUIREMENTS ----
+# ---- CROP REQUIREMENTS (Extended) ----
 CROP_REQUIREMENTS = {
     "Wheat": {"min_temp": 10, "max_temp": 25, "min_rainfall": 50, "max_rainfall": 100},
     "Maize": {"min_temp": 15, "max_temp": 30, "min_rainfall": 60, "max_rainfall": 150},
-    "Rice": {"min_temp": 20, "max_temp": 35, "min_rainfall": 100, "max_rainfall": 200}
+    "Rice": {"min_temp": 20, "max_temp": 35, "min_rainfall": 100, "max_rainfall": 200},
+    "Soybean": {"min_temp": 18, "max_temp": 30, "min_rainfall": 60, "max_rainfall": 120},
+    "Sorghum": {"min_temp": 20, "max_temp": 35, "min_rainfall": 40, "max_rainfall": 100},
+    "Sunflower": {"min_temp": 18, "max_temp": 30, "min_rainfall": 50, "max_rainfall": 100},
+    "Barley": {"min_temp": 12, "max_temp": 25, "min_rainfall": 60, "max_rainfall": 100},
+    "Groundnut": {"min_temp": 20, "max_temp": 30, "min_rainfall": 50, "max_rainfall": 100}
 }
 
 # ---- WEATHER DATA FROM OPEN-METEO ----
@@ -185,11 +190,7 @@ with tab1:
         fig = px.histogram(df, x="Yield (Q/acre)", nbins=20, title="Yield Distribution", color_discrete_sequence=["#4CAF50"])
         st.plotly_chart(fig, use_container_width=True)
     
-    with col2:
-        st.markdown("#### Correlation Heatmap")
-        corr = df[["Rain Fall (mm)", "Fertilizer", "Temperatue", "Nitrogen (N)", "Phosphorus (P)", "Potassium (K)", "Yield (Q/acre)"]].corr()
-        fig = px.imshow(corr, text_auto=".2f", color_continuous_scale="YlGnBu", title="Correlation Between Parameters")
-        st.plotly_chart(fig, use_container_width=True)
+
 
 # ---- TAB 2: YIELD PREDICTOR ----
 with tab2:
