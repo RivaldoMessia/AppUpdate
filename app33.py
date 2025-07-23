@@ -162,19 +162,19 @@ with st.container():
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        if st.button("📊 Data Overview", key="home_data"):
-            st.session_state["active_tab"] = "tab1"
-    with col2:
-        if st.button("🤖 Yield Predictor", key="home_predict"):
-            st.session_state["active_tab"] = "tab2"
-    with col3:
-        if st.button("📌 Recommendations", key="home_recommend"):
-            st.session_state["active_tab"] = "tab3"
-    with col4:
-        if st.button("🗓️ Planting Scheduler", key="home_schedule"):
-            st.session_state["active_tab"] = "tab4"
+    # col1, col2, col3, col4 = st.columns(4)
+    # with col1:
+    #     if st.button("📊 Data Overview", key="home_data"):
+    #         st.session_state["active_tab"] = "tab1"
+    # with col2:
+    #     if st.button("🤖 Yield Predictor", key="home_predict"):
+    #         st.session_state["active_tab"] = "tab2"
+    # with col3:
+    #     if st.button("📌 Recommendations", key="home_recommend"):
+    #         st.session_state["active_tab"] = "tab3"
+    # with col4:
+    #     if st.button("🗓️ Planting Scheduler", key="home_schedule"):
+    #         st.session_state["active_tab"] = "tab4"
     
     st.markdown("<hr>", unsafe_allow_html=True)
     st.image("https://images.unsplash.com/photo-1500595046743-ff22c10ab070", caption="Visualize Your Farming Future", use_container_width=True)
