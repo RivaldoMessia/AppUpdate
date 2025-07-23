@@ -269,8 +269,6 @@ with tab4:
     st.markdown("### Planting Scheduler")
     if st.button("Generate Planting Schedule", key="schedule_button"):
         weather_df = get_weather_data(city)
-        # Debug: Display raw weather data
-        st.write(" Weather Data:", weather_df)
         suitable_dates = []
         
         for _, row in weather_df.iterrows():
