@@ -270,7 +270,7 @@ with tab4:
     if st.button("Generate Planting Schedule", key="schedule_button"):
         weather_df = get_weather_data(city)
         # Debug: Display raw weather data
-        st.write("Debug - Weather Data:", weather_df)
+        st.write(" Weather Data:", weather_df)
         suitable_dates = []
         
         for _, row in weather_df.iterrows():
